@@ -1,0 +1,70 @@
+services:
+  dns:
+    build: ./dns
+    container_name: dns_server
+    networks:
+      lab_net:
+        ipv4_address: 172.28.0.5
+    ports:
+      - "20053:53/tcp"
+      - "20053:53/udp"
+    restart: unless-stopped
+
+  ntp:
+    build: ./ntp
+    container_name: ntp_server
+    networks:
+      lab_net:
+        ipv4_address: 172.28.0.4
+    ports:
+      - "20123:123/udp"
+    cap_add:
+      - SYS_TIME
+    restart: unless-stopped
+
+  radius-db:
+    build: ./radius/db
+    container_name: radius-db
+    environment:
+      POSTGRES_USER: radius
+      POSTGRES_PASSWORD: radiuspassword
+      POSTGRES_DB: radius
+    volumes:
+      - ./radius/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    networks:
+      lab_net:
+        ipv4_address: 172.28.0.10
+
+  radius:
+    build: ./radius
+    container_name: radius_server
+    depends_on:
+      - radius-db
+    networks:
+      lab_net:
+        ipv4_address: 172.28.0.3
+    ports:
+      - "21812:1812/udp"
+      - "21813:1813/udp"
+    restart: unless-stopped
+
+  vpn:
+    build: ./vpn
+    container_name: vpn_server
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      lab_net:
+        ipv4_address: 172.28.0.2
+    ports:
+      - "21194:1194/udp"
+    restart: unless-stopped
+
+networks:
+  lab_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/24
