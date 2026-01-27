@@ -38,11 +38,11 @@ Vérification que BIND écoute sur le port 53
 docker exec dns_server ss -lunpt | findstr ":53"
 
 
-✅ Cela montre que le service DNS écoute bien sur le port standard.
+ Cela montre que le service DNS écoute bien sur le port standard.
 
 Test de résolution DNS
 
-⚠️ Sous PowerShell, le caractère @ doit être protégé par des guillemets.
+ Sous PowerShell, le caractère @ doit être protégé par des guillemets.
 
 docker exec dns_server dig "@127.0.0.1" -p 53 google.fr
 
@@ -123,7 +123,7 @@ Vérification de l’interface VPN
 docker exec vpn_server ip a
 
 
-✅ La présence de l’interface tun0 confirme que le tunnel VPN est actif.
+La présence de l’interface tun0 confirme que le tunnel VPN est actif.
 
 6️/ Vérification du réseau Docker (bonus)
 Rôle
