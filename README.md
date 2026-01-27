@@ -145,7 +145,7 @@ docker compose down
 
 Arrête proprement tous les services.
 
-✅ Conclusion
+Conclusion
 
 Cette infrastructure démontre :
 
