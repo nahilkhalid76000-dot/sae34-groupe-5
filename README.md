@@ -16,13 +16,11 @@ Tous les services communiquent via un réseau Docker dédié (lab_net).
 
 1️/Démarrage de l’infrastructure
 
-Se placer à la racine du projet :
 
 docker compose down
 docker compose up -d --build
 docker ps
 
-Explication
 
 docker compose up -d --build démarre tous les services.
 
@@ -42,8 +40,6 @@ docker exec dns_server ss -lunpt | findstr ":53"
 
 Test de résolution DNS
 
- Sous PowerShell, le caractère @ doit être protégé par des guillemets.
-
 docker exec dns_server dig "@127.0.0.1" -p 53 google.fr
 
 Résultat attendu
@@ -55,11 +51,6 @@ Si le statut est :
 NOERROR → résolution réussie
 
 SERVFAIL → le serveur fonctionne mais la récursion DNS (Internet) n’est pas configurée
-
-Explication orale possible
-
-« Le serveur DNS répond bien aux requêtes.
-Le code SERVFAIL indique que la récursion n’est pas configurée, mais cela prouve que le service BIND fonctionne et traite les requêtes DNS. »
 
 3️/ Service NTP – Chrony
 Rôle du NTP
@@ -83,10 +74,6 @@ Reference ID : serveur NTP utilisé
 
 Last offset / System time : écart de synchronisation
 
-Explication orale possible
-
-« Le serveur NTP est synchronisé avec une source de temps externe. Les informations affichées montrent que la synchronisation fonctionne correctement. »
-
 4️/ Service RADIUS – FreeRADIUS
 Rôle de RADIUS
 
@@ -98,10 +85,6 @@ docker exec radius_server radtest steve testing localhost 0 testing123
 Résultat attendu
 Received Access-Accept
 
-Explication orale possible
-
-« Le serveur RADIUS valide l’utilisateur steve avec son mot de passe.
-La réponse Access-Accept confirme que l’authentification fonctionne. »
 
 5️/ Service VPN – OpenVPN
 Rôle du VPN
@@ -125,19 +108,7 @@ docker exec vpn_server ip a
 
 La présence de l’interface tun0 confirme que le tunnel VPN est actif.
 
-6️/ Vérification du réseau Docker (bonus)
-Rôle
 
-Tous les services sont connectés au même réseau Docker avec des adresses IP fixes.
-
-docker network inspect sae34-groupe-5_lab_net
-
-
-Cela permet de vérifier :
-
-le subnet (ex : 172.28.0.0/24)
-
-les IP attribuées à chaque service
 
 7️/ Arrêt de l’infrastructure
 docker compose down
