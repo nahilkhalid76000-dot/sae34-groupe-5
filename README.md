@@ -110,7 +110,7 @@ La présence de l’interface tun0 confirme que le tunnel VPN est actif.
 
 
 
-7️/ Arrêt de l’infrastructure
+6/ Arrêt de l’infrastructure
 docker compose down
 
 
